@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Головна</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-logout { background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; }
+        
+        .btn-add { background-color: #28a745; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; margin-right: 10px; }
+        .btn-add:hover { background-color: #218838; }
+        
+        .btn-add-subject { background-color: #17a2b8; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; }
+        .btn-add-subject:hover { background-color: #138496; }
+
+        .badge { padding: 5px 10px; border-radius: 10px; font-size: 12px; color: white; }
+        .badge-admin { background-color: red; }
+        .badge-user { background-color: green; }
+        .action-link { margin-right: 10px; text-decoration: none; font-weight: bold; }
+        .edit-link { color: #007bff; }
+        .delete-link { color: #dc3545; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📚 Бібліотечний фонд</h1>
+        <div>
+            <span th:if="${isAdmin}" class="badge badge-admin">ADMIN</span>
+            <span th:unless="${isAdmin}" class="badge badge-user">USER</span>
+            
+            <a th:href="@{/logout}" class="btn-logout">Вийти</a>
+        </div>
+    </div>
+
+    <div th:if="${isAdmin}" style="margin-bottom: 15px;">
+        <a th:href="@{/add}" class="btn-add">➕ Додати книгу</a>
+        <a th:href="@{/add-subject}" class="btn-add-subject">➕ Додати предмет</a>
+    </div>
+
+    <p>Список доступної літератури:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Назва книги</th>
+                <th>Автор</th>
+                <th>Тип</th>
+                <th>Предмет</th>
+                <th>Кафедра</th>
+                <th th:if="${isAdmin}">Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">Назва</td>
+                <td th:text="${book.author}">Автор</td>
+                <td th:text="${book.type}">Тип</td>
+                <td th:text="${book.subject.name}">Предмет</td>
+                <td th:text="${book.subject.department.name}">Кафедра</td>
+                
+                <td th:if="${isAdmin}">
+                    <a th:href="@{/edit/{id}(id=${book.id})}" class="action-link edit-link">Редагувати</a>
+                    <a th:href="@{/delete/{id}(id=${book.id})}" 
+                       onclick="return confirm('Ви впевнені, що хочете видалити цей запис?');"
+                       class="action-link delete-link">
+                       Видалити
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

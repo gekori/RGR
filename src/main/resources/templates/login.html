@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Вхід</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
+        .login-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .error { color: red; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2 style="text-align: center;">Бібліотека</h2>
+        <div th:if="${param.error}" class="error">
+            Невірний логін або пароль
+        </div>
+        <div th:if="${param.logout}" class="error" style="color: green;">
+            Ви вийшли з системи
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <label>Логін:</label>
+            <input type="text" name="username" placeholder="Введіть логін (admin/user)" required/>
+            
+            <label>Пароль:</label>
+            <input type="password" name="password" placeholder="Введіть пароль" required/>
+            
+            <button type="submit">Увійти</button>
+        </form>
+    </div>
+</body>
+</html>
